@@ -1,0 +1,19 @@
+{
+  "name": "rescript-future",
+  "version": "0.0.0",
+  "scripts": {
+    "res:build": "rescript",
+    "res:clean": "rescript clean",
+    "res:dev": "rescript -w"
+  },
+  "keywords": [
+    "rescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@rescript/core": "^0.7.0",
+    "rescript": "^11.1.0-rc.2",
+    "rescript-webapi": "^0.9.1"
+  }
+}
