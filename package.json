@@ -1,5 +1,5 @@
 {
-  "name": "rescript-future",
+  "name": "@jvlk/rescript-future",
   "version": "0.0.0",
   "scripts": {
     "res:build": "rescript",

@@ -1,5 +1,5 @@
 {
-  "name": "rescript-future",
+  "name": "@jvlk/rescript-future",
   "sources": [
     {
       "dir": "src",
