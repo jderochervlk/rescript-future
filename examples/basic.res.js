@@ -4,7 +4,17 @@
 var Future = require("../src/future.res.js");
 var Js_exn = require("rescript/lib/js/js_exn.js");
 
-console.log("running");
+Future.fold(Future.map(Future.make(function () {
+              return new Promise((function (res, _rej) {
+                            res(42);
+                          }));
+            }), (function (res) {
+            return res + 1 | 0;
+          })), (function (param) {
+        console.error("bad");
+      }), (function (param) {
+        console.log("farts");
+      }));
 
 async function fn() {
   try {

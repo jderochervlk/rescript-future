@@ -1,9 +1,9 @@
-// let _ =
-//   Future.make(() => Promise.make((res, _rej) => res(42)))
-//   ->Future.map(res => res + 1)
-//   ->Future.fold(_ => Console.error("bad"), _ => Console.log("farts"))
-Console.log("running")
+let _ =
+  Future.make(() => Promise.make((res, _rej) => res(42)))
+  ->Future.map(res => res + 1)
+  ->Future.fold(_ => Console.error("bad"), _ => Console.log("farts"))
 
+// a future will never throw an error
 let fn = async () => {
   let _ = try {
     await Future.make(() => Promise.make((_res, rej) => rej(Exn.raiseError("There was a problem"))))
