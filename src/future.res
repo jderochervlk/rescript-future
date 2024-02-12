@@ -3,16 +3,16 @@ external safeCatch: (promise<'a>, 'e => result<'a, 'e>) => 'e = "catch"
 
 type future<'a, 'e> = unit => promise<result<'a, 'e>>
 
-let make = (lazyPromise: unit => promise<'a>): future<'a, 'e> => () =>
+let make = (lazyPromise: unit => promise<'a>): future<'a, 'e> => () => {
   try {
-    lazyPromise()->Promise.thenResolve(t => Ok(t))->safeCatch(e => Error(e))
+    lazyPromise()
   } catch {
-  | Exn.Error(e) =>
-    switch Exn.message(e) {
-    | Some(e) => Promise.make((res, _) => res(Error(e)))
-    | None => Promise.make((res, _) => res(Error("An unknown error has occurred")))
-    }
+  | e => Promise.make((_, rej) => rej(e))
   }
+  ->Promise.thenResolve(t => Ok(t))
+  ->safeCatch(e => Error(e))
+}
+
 let map = (future: future<'a, 'e>, fn: 'a => 'b): future<'b, 'e> => () =>
   future()->Promise.thenResolve(t =>
     switch t {

@@ -2,34 +2,10 @@
 'use strict';
 
 var Future = require("../src/future.res.js");
-var Js_exn = require("rescript/lib/js/js_exn.js");
 
 var a = Future.make(function () {
       return Promise.resolve(1);
     });
 
-Future.fold(Future.all2([
-          a,
-          a
-        ]), (function (prim) {
-        console.error(prim);
-      }), (function (prim) {
-        console.log(prim);
-      }));
-
-var b = Future.make(function () {
-      return Promise.reject(Js_exn.raiseError("There was an error"));
-    });
-
-Future.fold(Future.all2([
-          a,
-          b
-        ]), (function (prim) {
-        console.error(prim);
-      }), (function (prim) {
-        console.log(prim);
-      }));
-
 exports.a = a;
-exports.b = b;
 /* a Not a pure module */

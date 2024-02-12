@@ -4,28 +4,41 @@
 var Future = require("../src/future.res.js");
 var Js_exn = require("rescript/lib/js/js_exn.js");
 
-Future.fold(Future.map(Future.make(function () {
-              return new Promise((function (res, _rej) {
-                            res(42);
-                          }));
-            }), (function (res) {
-            return res + 1 | 0;
-          })), (function (prim) {
-        console.error(prim);
-      }), (function (prim) {
-        console.log(prim);
-      }));
+console.log("running");
 
-Future.fold(Future.map(Future.make(function () {
-              return new Promise((function (_res, rej) {
-                            rej(Js_exn.raiseError("There was a problem"));
-                          }));
-            }), (function (res) {
-            return res + 1 | 0;
-          })), (function (prim) {
-        console.error(prim);
-      }), (function (prim) {
-        console.log(prim);
-      }));
+async function fn() {
+  try {
+    await Future.fold(Future.map(Future.make(function () {
+                  return new Promise((function (_res, rej) {
+                                rej(Js_exn.raiseError("There was a problem"));
+                              }));
+                }), (function (res) {
+                return res + 1 | 0;
+              })), (function (e) {
+            console.error("Exception was not raised and error is handled by the fold function.");
+          }), (function (prim) {
+            console.log(prim);
+          }));
+  }
+  catch (exn){
+    console.error("never logs");
+  }
+}
 
+fn();
+
+async function fn$1() {
+  try {
+    await new Promise((function (_res, rej) {
+            rej(Js_exn.raiseError("There was a problem"));
+          }));
+  }
+  catch (exn){
+    console.error("Exception was thrown and this logs");
+  }
+}
+
+fn$1();
+
+exports.fn = fn$1;
 /*  Not a pure module */

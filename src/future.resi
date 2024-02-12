@@ -8,7 +8,7 @@ type future<'a, 'e> = unit => promise<result<'a, 'e>>
   let request = Future.make(() => Webapi.Fetch.fetch("http://httpstat.us/200"))
  ```
  */
-let make: (unit => promise<'a>) => future<'a, string>
+let make: (unit => promise<'a>) => future<'a, 'e>
 
 /**
  Apply a function to the `Ok` value in a `future`. 
