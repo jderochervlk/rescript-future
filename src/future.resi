@@ -1,5 +1,16 @@
-// A lazy value that holds an asynchronous action that might result in failure.
-type future<'a, 'e> = unit => promise<result<'a, 'e>>
+/**
+ Similar to the existing result type with with a Cancelled variant
+ */
+type result<'a, 'e> = Ok('a) | Error('e) | Cancelled
+
+/**
+ lazy value that holds an asynchronous action that might result in failure.
+ */
+type future<'a, 'e> = {
+  value: unit => promise<result<'a, 'e>>,
+  cancelled: ref<bool>,
+  controller: option<Webapi.Fetch.AbortController.t>,
+}
 
 /**
  Create a `future` from a lazy function that returns a `promise`.
@@ -8,7 +19,7 @@ type future<'a, 'e> = unit => promise<result<'a, 'e>>
   let request = Future.make(() => Webapi.Fetch.fetch("http://httpstat.us/200"))
  ```
  */
-let make: (unit => promise<'a>) => future<'a, 'e>
+let make: (unit => promise<'a>, ~controller: Webapi.Fetch.AbortController.t=?) => future<'a, 'e>
 
 /**
  Apply a function to the `Ok` value in a `future`. 
@@ -35,13 +46,14 @@ let number =
 let mapError: (future<'a, 'e>, 'e => 'b) => future<'a, 'b>
 let mapPromise: (future<'a, 'e>, 'a => promise<'b>) => future<'d, 'e>
 let flatMap: (future<'a, 'f>, 'a => result<'b, 'f>) => future<'b, 'f>
-
-type successFn<'a, 'b> = 'a => 'b
-type errorFn<'a, 'b> = 'a => 'b
-let fold: (future<'t, 'f>, errorFn<'f, 'u>, successFn<'t, 'u>) => RescriptCore.Promise.t<'u>
+type successFn<'a> = 'a => unit
+type errorFn<'a> = 'a => unit
+let fold: (future<'t, 'f>, errorFn<'f>, successFn<'t>) => RescriptCore.Promise.t<unit>
 let run: future<'a, 'e> => promise<result<'a, 'e>>
+let cancel: future<'a, 'e> => unit
 let all2: ((future<'a, 'e>, future<'b, 'f>)) => future<('a, 'b), (option<'e>, option<'f>)>
 let all3: ((future<'a, 'e>, future<'b, 'f>, future<'c, 'e>)) => future<
   ('a, 'b, 'c),
   (option<'e>, option<'f>, option<'e>),
 >
+let fetch: string => future<Webapi.Fetch.response, 'a>

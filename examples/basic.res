@@ -1,7 +1,7 @@
 let _ =
   Future.make(() => Promise.make((res, _rej) => res(42)))
   ->Future.map(res => res + 1)
-  ->Future.fold(_ => Console.error("bad"), _ => Console.log("farts"))
+  ->Future.fold(Console.error, Console.log)
 
 // a future will never throw an error
 let fn = async () => {
@@ -30,9 +30,3 @@ let fn = async () => {
 }
 
 let _ = fn()
-
-// /** Inline promise */
-// let _ = Future.make(() => Webapi.Fetch.fetch(""))->Future.fold(
-//   e => Console.error(e),
-//   _ => Console.log("oops"),
-// )

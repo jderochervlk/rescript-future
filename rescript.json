@@ -12,10 +12,10 @@
     }
   ],
   "package-specs": {
-    "module": "commonjs",
+    "module": "es6",
     "in-source": true
   },
-  "suffix": ".res.js",
+  "suffix": ".res.mjs",
   "bs-dependencies": [
     "@rescript/core",
     "rescript-webapi"
