@@ -65,21 +65,7 @@ Future.fold(request, (function (prim) {
 
 Future.cancel(request);
 
-async function fn() {
-  var data = await Future.run(request);
-  if (typeof data !== "object") {
-    console.log("request was cancelled");
-    return ;
-  }
-  if (data.TAG === "Ok") {
-    console.log(data._0);
-    return ;
-  }
-  console.error(data._0);
-}
-
 export {
   request ,
-  fn ,
 }
 /*  Not a pure module */

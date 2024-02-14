@@ -39,10 +39,3 @@ let _ = request->Future.fold(Console.error, Console.log)
 
 // cancel before it's done and nothing will be logged to the console
 let _ = request->Future.cancel
-
-let fn = async () =>
-  switch await request->Future.run {
-  | Ok(data) => Console.log(data)
-  | Error(err) => Console.error(err)
-  | Cancelled => Console.log("request was cancelled")
-  }

@@ -23,7 +23,7 @@ async function fn() {
                                 }));
                   }), undefined), (function (res) {
                 return res + 1 | 0;
-              })), (function (e) {
+              })), (function (_e) {
             console.error("Exception was not raised and error is handled by the fold function.");
           }), (function (prim) {
             console.log(prim);

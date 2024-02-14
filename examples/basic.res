@@ -9,7 +9,7 @@ let fn = async () => {
     await Future.make(() => Promise.make((_res, rej) => rej(Exn.raiseError("There was a problem"))))
     ->Future.map(res => res + 1)
     ->Future.fold(
-      (e: Exn.t) =>
+      (_e: Exn.t) =>
         Console.error("Exception was not raised and error is handled by the fold function."),
       Console.log,
     )
