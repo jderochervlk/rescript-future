@@ -22,7 +22,7 @@ Future.fold(Future.map(Future.flatMap(Future.$$fetch("http://httpstat.us/200"), 
         console.log(prim);
       }));
 
-Future.fold(Future.map(Future.flatMap(Future.$$fetch("http://httpstat.us/500"), (function (res) {
+Future.fold(Future.mapPromise(Future.flatMap(Future.$$fetch("http://httpstat.us/500"), (function (res) {
                 if (res.ok) {
                   return {
                           TAG: "Ok",
@@ -35,7 +35,7 @@ Future.fold(Future.map(Future.flatMap(Future.$$fetch("http://httpstat.us/500"), 
                         };
                 }
               })), (function (res) {
-            return res.statusText;
+            return res.json();
           })), (function (prim) {
         console.error(prim);
       }), (function (prim) {
@@ -65,7 +65,21 @@ Future.fold(request, (function (prim) {
 
 Future.cancel(request);
 
+async function fn() {
+  var data = await Future.run(request);
+  if (typeof data !== "object") {
+    console.log("request was cancelled");
+    return ;
+  }
+  if (data.TAG === "Ok") {
+    console.log(data._0);
+    return ;
+  }
+  console.error(data._0);
+}
+
 export {
   request ,
+  fn ,
 }
 /*  Not a pure module */

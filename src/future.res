@@ -148,5 +148,20 @@ let all3 = ((one: future<'a, 'e>, two: future<'b, 'f>, three: future<'c, 'g>)): 
 
 let fetch = string => {
   let controller = Webapi.Fetch.AbortController.make()
-  make(() => Webapi.Fetch.fetch(string), ~controller)
+  let init = Webapi.Fetch.RequestInit.make(~signal=controller.signal, ())
+  make(() => Webapi.Fetch.fetchWithInit(string, init), ~controller)
+}
+
+let fetchWithInit = (string, init: Webapi.Fetch.RequestInit.t, controller) => {
+  make(() => Webapi.Fetch.fetchWithInit(string, init), ~controller)
+}
+
+let fetchWithRequest = request => {
+  let controller = Webapi.Fetch.AbortController.make()
+  let init = Webapi.Fetch.RequestInit.make(~signal=controller.signal, ())
+  make(() => Webapi.Fetch.fetchWithRequestInit(request, init), ~controller)
+}
+
+let fetchWithRequestInit = (request, init: Webapi.Fetch.RequestInit.t, controller) => {
+  make(() => Webapi.Fetch.fetchWithRequestInit(request, init), ~controller)
 }

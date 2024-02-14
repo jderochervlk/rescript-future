@@ -2,6 +2,7 @@
 
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as Core__Option from "@rescript/core/src/Core__Option.res.mjs";
+import * as Webapi__Fetch from "rescript-webapi/src/Webapi/Webapi__Fetch.res.mjs";
 import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 
 function make(lazyPromise, controller) {
@@ -366,8 +367,29 @@ function all3(param) {
 
 function $$fetch$1(string) {
   var controller = new AbortController();
+  var init = Webapi__Fetch.RequestInit.make(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, Caml_option.some(controller.signal), undefined);
   return make((function () {
-                return fetch(string);
+                return fetch(string, init);
+              }), controller);
+}
+
+function fetchWithInit(string, init, controller) {
+  return make((function () {
+                return fetch(string, init);
+              }), controller);
+}
+
+function fetchWithRequest(request) {
+  var controller = new AbortController();
+  var init = Webapi__Fetch.RequestInit.make(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, Caml_option.some(controller.signal), undefined);
+  return make((function () {
+                return fetch(request, init);
+              }), controller);
+}
+
+function fetchWithRequestInit(request, init, controller) {
+  return make((function () {
+                return fetch(request, init);
               }), controller);
 }
 
@@ -383,5 +405,8 @@ export {
   all2 ,
   all3 ,
   $$fetch$1 as $$fetch,
+  fetchWithInit ,
+  fetchWithRequest ,
+  fetchWithRequestInit ,
 }
 /* No side effect */
