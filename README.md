@@ -17,7 +17,7 @@ Update `rescript.json`.
 ## Examples
 ```rescript
 let _ =
-  Future.make(() => Fetch.fetch("http://httpstat.us/200"))
+  Future.fetch("http://httpstat.us/200")
   ->Future.flatMap(res => {
     switch res->Fetch.Response.ok {
     | true => Ok(res)

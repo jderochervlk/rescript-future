@@ -1,13 +1,16 @@
 {
   "name": "@jvlk/rescript-future",
-  "version": "0.0.0",
+  "version": "1.0.0-rc.1",
   "scripts": {
     "res:build": "rescript",
     "res:clean": "rescript clean",
     "res:dev": "rescript -w"
   },
   "keywords": [
-    "rescript"
+    "rescript",
+    "functional programming",
+    "future",
+    "fetch"
   ],
   "author": "",
   "license": "MIT",
