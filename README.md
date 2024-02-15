@@ -30,7 +30,7 @@ let _ =
 ```
 More examples can be found in the `examples` directory.
 
-###
+### React
 ```rescript
 @react.component
 let make = () => {
