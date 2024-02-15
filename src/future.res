@@ -9,7 +9,7 @@ type result<'a, 'e> =
 type future<'a, 'e> = {
   value: unit => promise<result<'a, 'e>>,
   cancelled: ref<bool>,
-  controller: option<Webapi.Fetch.AbortController.t>,
+  controller: ref<option<Webapi.Fetch.AbortController.t>>,
 }
 
 let make = (lazyPromise: unit => promise<'a>, ~controller=?): future<'a, 'e> => {
@@ -25,7 +25,7 @@ let make = (lazyPromise: unit => promise<'a>, ~controller=?): future<'a, 'e> => 
       ->safeCatch(e => Error(e))
     },
     cancelled,
-    controller,
+    controller: ref(controller),
   }
 }
 
@@ -100,8 +100,13 @@ let fold = (future: future<'a, 'e>, errorFn: errorFn<'f>, successFn: successFn<'
 let run = (future: future<'a, 'e>) => future.value()
 
 let cancel = (future: future<'a, 'e>) => {
-  future.controller->Option.forEach(Webapi.Fetch.AbortController.abort)
+  future.controller.contents->Option.forEach(Webapi.Fetch.AbortController.abort)
   future.cancelled := true
+}
+
+let reset = (future: future<'a, 'e>) => {
+  future.controller := Some(Webapi.Fetch.AbortController.make())
+  future.cancelled := false
 }
 
 let all2 = ((one: future<'a, 'e>, two: future<'b, 'f>)): future<

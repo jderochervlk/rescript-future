@@ -9,7 +9,7 @@ type result<'a, 'e> = Ok('a) | Error('e) | Cancelled
 type future<'a, 'e> = {
   value: unit => promise<result<'a, 'e>>,
   cancelled: ref<bool>,
-  controller: option<Webapi.Fetch.AbortController.t>,
+  controller: ref<option<Webapi.Fetch.AbortController.t>>,
 }
 
 /**
@@ -98,6 +98,15 @@ let _ = request->Future.cancel
 ```
 */
 let cancel: future<'a, 'e> => unit
+
+/**
+ Reset a cancelled a future to allow it to run again.
+
+```rescript
+let _ = request->Future.reset
+```
+*/
+let reset: future<'a, 'e> => unit
 
 /**
  Use 2 futures with `Promise.all2`.

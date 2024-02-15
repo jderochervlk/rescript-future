@@ -34,7 +34,9 @@ function make(lazyPromise, controller) {
                         });
             }),
           cancelled: cancelled,
-          controller: controller
+          controller: {
+            contents: controller
+          }
         };
 }
 
@@ -179,10 +181,15 @@ function run(future) {
 }
 
 function cancel(future) {
-  Core__Option.forEach(future.controller, (function (prim) {
+  Core__Option.forEach(future.controller.contents, (function (prim) {
           prim.abort();
         }));
   future.cancelled.contents = true;
+}
+
+function reset(future) {
+  future.controller.contents = new AbortController();
+  future.cancelled.contents = false;
 }
 
 function all2(param) {
@@ -402,6 +409,7 @@ export {
   fold ,
   run ,
   cancel ,
+  reset ,
   all2 ,
   all3 ,
   $$fetch$1 as $$fetch,
